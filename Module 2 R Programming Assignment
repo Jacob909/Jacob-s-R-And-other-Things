@@ -1,0 +1,11 @@
+#Evaluate function myMean
+#Data
+assignment2 <- c(16,18,14,22,27,19,17,22,20,22)
+
+#As given
+myMean <- function(assignment2) { return(sum(assignment)/length(someData)) } 
+myMean(assignment2)
+
+#Corrected
+myMean <- function(assignment2){return(sum(assignment2)/length(assignment2))}
+myMean(assignment2)
