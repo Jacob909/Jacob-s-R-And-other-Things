@@ -1,0 +1,21 @@
+# Load Data 
+frequency <- c(.6, .3, .4, .4, .2, .6, .3, .4, .9, .2)
+bp <- c(103, 87, 32, 42, 59, 109, 78, 205, 135, 176)
+first <- c(1, 1, 1, 1, 0, 0, 0, 0, NA, 1)
+second <- c(0, 0, 1, 1, 0, 0, 1, 1, 1, 1)
+finalDecision <- c(0, 1, 0, 1, 0, 1, 0, 1, 1, 1)
+
+doctorData <- data.frame(frequency, bp, first, second, finalDecision)
+
+# A. First Assignment: Create a side by size box plot, and histogram
+
+#Boxplots
+boxplot(frequency)
+boxplot(bp)
+
+#Histogram
+hist(frequency)
+hist(bp)
+hist(first, na.rm = TRUE)
+hist(second)
+hist(finalDecision)
