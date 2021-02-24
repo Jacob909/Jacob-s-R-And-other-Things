@@ -1,0 +1,45 @@
+# Etablish custom data
+countries <- c("Portugal", "England", "Germany", "Spain", "France", "Italy", "Switzerland")
+size_rating <- c(1, 2, 3, 3, 3, 4, 1)
+pop_rating <- c(2, 4, 4, 3, 4, 4, 1)
+
+
+# S3 Class
+Portugal <- list(name = countries[1], size = size_rating[1], population = pop_rating[1])
+class(Portugal) <- "Country"
+Portugal
+typeof(Portugal)
+
+Germany <- list(name = countries[3], size = size_rating[3], population = pop_rating[3])
+class(Germany) <- "Country"
+Germany
+typeof(Germany)
+
+# S4 Class
+test <- setClass("State", slots = list(name = "character", size = "numeric", population = "numeric" ))
+England <- new(Class = "State", name = countries[2], size = size_rating[2], population = pop_rating[2])
+typeof(England)
+England
+
+Spain <- new(Class = "State", name = countries[4], size = size_rating[4], population = pop_rating[4])
+typeof(Spain)
+England
+
+# Test Generic Functions
+# Data
+data(Portugal)
+daya(Germany)
+data(England)
+data(Spain)
+
+# Head
+head(Portugal)
+jead(Germany)
+head(England)
+head(Spain)
+
+# List
+list(Portugal)
+list(Germany)
+list(England)
+list(Spain)
