@@ -1,0 +1,11 @@
+library(pryr)
+library(plyr)
+Student <- read.csv("D:\\Assignment 6 Dataset-1.txt")
+Student
+StudentAverage = ddply(Student,"Sex",transform,Grade.Average=mean(Grade))
+
+write.table(StudentAverage, "Students_Gendered_Mean")
+
+i_students <- subset(Student, grepl("i", Student$Name, ignore.case=T))
+
+write.csv(i_students, file = "student.csv")
