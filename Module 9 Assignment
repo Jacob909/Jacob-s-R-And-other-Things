@@ -1,0 +1,15 @@
+library(ggplot2)
+library(lattice)
+
+#Read in the data 
+bData <- read.csv("C:\\Users\\tonylo\\Desktop\\beaver.csv")
+
+# Base R Plot
+plot(bData$time, bData$temp, type = "p", xlab = "Time", ylab = "Temperature", 
+     main = "Beaver Temperature to Time of Day")
+
+# Lattice Plot
+histogram(bData$activ, data = bData)
+
+# Ggplot Plot
+ggplot(bData, aes(x = day, y = temp, group = day)) + geom_boxplot()
