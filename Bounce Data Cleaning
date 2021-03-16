@@ -1,0 +1,70 @@
+library(ggplot2)
+library(readxl)
+library(dplyr)
+library(stringr)
+library(xlsx)
+bounceData <- read_excel("C:\\Users\\tonylo\\Desktop\\BounceMazeData14March2021.xlsx")
+
+# Step 1: Data Munging
+# The data is very messy, containing lots N/A Values, and rows with no information in them at all.
+# To munge this data, I will first inspect it.
+str(bounceData)
+# There are 10 columns, ...1, and ...2 contain two things. ...1 contains the word DATA: 
+bounceData$...1[141]
+# This DATA: is the only thing contained in the ...1 column, that or a NA Value. 
+# Without further context as to what DATA: indicates, I am somewhat uncomfortable disregarding it
+# totally as some of the values include N/A instead of DATA:. For the sake of cleaning the data,
+# I will err on the side of caution and note that it may have some use I am unaware of. But I will
+# remove the column. 
+cleanedBounceData <- bounceData[,-1]
+
+# Now for ...2, this is more complex as it appears that while some of the observations are N/A,
+# Others include values, and more complex data. 
+cleanedBounceData$...2[121]
+cleanedBounceData$...2[344]
+cleanedBounceData$...2[918]
+
+# So, some of these values have possibly useful data, like path value. Others have timestamps,
+# some are N/A, and some only have id. So, what is to be done with these? Well, manually looking
+# through these seems to demonstrate that the vast majority are missing values. Parsing them for
+# useful information could provide information, but will also return a lot of N/A values. 
+# For the purposes of the basic inspection I want to do here, I will simply remove this column.
+# In the future, it may be worthwhile to sit down and make a function to parse for useful info.
+
+cleanedBounceData <- cleanedBounceData[,-1]
+head(cleanedBounceData)
+
+# This leaves us with 8 columns of data. Even with a basic header call, these still include N/A
+# values. To further clean this, I will filter out values with "Player Name" being equal to N/A
+
+cleanedBounceData <- filter(cleanedBounceData, is.na(cleanedBounceData$`Player Name`) == FALSE)
+str(cleanedBounceData)
+head(cleanedBounceData)
+# This gives us a tibble with 117 observations, and 8 columns. The most obvious problem is that
+# the level variable is a character variable. This is a problem because if we want to compute
+# which level players got to, we will need to do math. Put simply, you can't do math on characters.
+# So, I will change the "Tutorial" value to 0, and then change the characters to double variables.
+
+levels <- cleanedBounceData$Level
+levels <- str_replace(levels,"Tutorial", "0")
+levels <- as.double(levels, na.rm = TRUE)
+cleanedBounceData$Level <- levels 
+cleanedBounceData
+
+# Now we have the levels as doubles, we are close to being able to visualize the sample of 
+# data we have here. However there is still an issue, some rows only have NA values in them.
+# To remove these, I will simply filter out NA by Time at Complete as every observation
+# which has Time at Complete as a number does not have any other NA values, except for one which
+# has some useful data. So it will be unaffected 
+cleanedBounceData <- filter(cleanedBounceData, is.na(cleanedBounceData$`Time at Completion`) == FALSE)
+cleanedBounceData
+
+# We now have only 1 NA value, at observation 11
+cleanedBounceData[11,]
+# Mirror adjustment is NA. For the sake of having more useful data, I will assume NA is 
+# Just 0, and no changes were made to mirrors.
+cleanedBounceData$`Mirror Adjustments`[11] <- 0
+cleanedBounceData[11,]
+
+# We now have no NA values, except for Date Stamp. I will write an excel file for use. 
+write.xlsx(x = cleanedBounceData, file = "CleanedBouncedata.xlsx")
