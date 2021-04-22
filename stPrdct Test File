@@ -1,0 +1,9 @@
+# devtools::install_github("Jacob909/prdctr")
+library(stPrdct)
+
+colMode(mtcars$mpg)
+colPercent(mtcars$mpg, 10.4)
+mostCommonObservation(mtcars)
+mostCommonPercentage(mtcars)
+varRequest(mtcars, mtcars$mpg, 21.0, cyl, 6)
+
